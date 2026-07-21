@@ -62,11 +62,11 @@ Built and configured a logical topology of a multi-city organization featuring A
                                                           ➔   SRV-SD-02
                                          ➔    SW-SD-02   ➔   CL-SD-01
 
-                                         ➔     SD-R1     ➔     LA-R1     ➔    SW-LA-01   ➔   SRV-LA-01
-                                                                                            ➔   SRV-LA-02
-                                                                           ➔    SW-LA-02   ➔   CL-LA-01
+                                         ➔     SD-R1     ➔     LA-R1    ➔   SW-LA-01   ➔   SRV-LA-01
+                                                                                          ➔   SRV-LA-02
+                                                                          ➔   SW-LA-02   ➔   CL-LA-01
 
-                                                          ➔     NY-R1     ➔    SW-NY-01   ➔   SRV-NY-01
-                                                                                            ➔   SRV-NY-02
-                                                                           ➔    SW-NY-02   ➔   CL-NY-01
+                                                          ➔     NY-R1    ➔   SW-NY-01   ➔   SRV-NY-01
+                                                                                          ➔   SRV-NY-02
+                                                                          ➔   SW-NY-02   ➔   CL-NY-01
 
