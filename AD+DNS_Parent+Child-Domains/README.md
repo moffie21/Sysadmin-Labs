@@ -3,7 +3,7 @@
 For educational purposes showcasing my technical systema and network administrator abilities.
   
 ## WHAT'S THIS?
-Built and configured a logical topology of a multi-city organization featuring Active Directory parent and child domains in VMware Workstation Pro 25H2 lab environment.
+Built and configured a logical topology of a multi-city organization featuring Active Directory parent and child domains in VMware Workstation Pro lab environment.
   
 ## GOALS - Proof Config Implementation Worked Successfully
 - CL-SD-01 Win10 VM successfully ping:
