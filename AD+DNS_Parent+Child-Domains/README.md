@@ -7,18 +7,18 @@ Built and configured a logical topology of a multi-city organization featuring A
   
 ## GOALS - Proof Config Implementation Worked Successfully
 - CL-SD-01 Win10 VM successfully ping:
-    - parent domain www.CIS.com
-    - public domain www.google.com
+    - parent domain `www.CIS.com`
+    - public domain `www.google.com`
     - SRV-LA-01.LA.CIS.com
     - SRV-NY-01.NY.CIS.com
 - CL-LA-01 Win10 VM successfully ping:
-    - parent domain www.CIS.com
-    - public domain www.google.com
+    - parent domain `www.CIS.com`
+    - public domain `www.google.com`
     - SRV-SD-01.CIS.com
     - SRV-NY-01.NY.CIS.com
 - CL-NY-01 Win10 VM successfully ping:
-    - parent domain www.CIS.com
-    - public domain www.google.com
+    - parent domain `www.CIS.com`
+    - public domain `www.google.com`
     - SRV-SD-01.CIS.com
     - SRV-LA-01.LA.CIS.com
 
