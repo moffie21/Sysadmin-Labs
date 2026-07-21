@@ -11,7 +11,7 @@ Built and configured a logical topology of a multi-city organization featuring A
 - Successfully SSH from a L2 or L3 device to: LA_3650_DMZ, LA_3650, and ISP_3650_R devices.
 
 ## TOOLS
-- VM platform: VMware Workstation Pro 25H2
+- Type 2 hypervisor: VMware Workstation Pro 25H2
   - Lab environment: GNS3 v2.2.56.1
     - Device:
         - L3 Cisco 2911 router => Cisco IOSv 15.9(3)M2
