@@ -3,69 +3,70 @@
 For educational purposes showcasing my technical systema and network administrator abilities.
   
 ## WHAT'S THIS?
-Built and configured a logical topology of a multi-city organization featuring ASA and IPsec VPN routing protocols in VMware Workstation Pro 25H2 lab environment.
+Built and configured a logical topology of a multi-city organization featuring Active Directory parent and child domains in VMware Workstation Pro 25H2 lab environment.
   
 ## GOALS - Proof Config Implementation Worked Successfully
-- Allow DMZ devices to ping LA devices.
-- Successfully have each L3 device, except ISP; SF; and MI, learn single-area OSPF routes.
-- Successfully SSH from a L2 or L3 device to: LA_3650_DMZ, LA_3650, and ISP_3650_R devices.
+- CL-SD-01 Win10 VM successfully ping:
+    - parent domain www.CIS.com
+    - public domain www.google.com
+    - SRV-LA-01.LA.CIS.com
+    - SRV-NY-01.NY.CIS.com
+- CL-LA-01 Win10 VM successfully ping:
+    - parent domain www.CIS.com
+    - public domain www.google.com
+    - SRV-SD-01.CIS.com
+    - SRV-NY-01.NY.CIS.com
+- CL-NY-01 Win10 VM successfully ping:
+    - parent domain www.CIS.com
+    - public domain www.google.com
+    - SRV-SD-01.CIS.com
+    - SRV-LA-01.LA.CIS.com
 
 ## TOOLS
 - Type 2 hypervisor: VMware Workstation Pro 25H2
-  - Lab environment: GNS3 v2.2.56.1
-    - Device:
-        - L3 Cisco 2911 router => Cisco IOSv 15.9(3)M2
-        - Cisco 5506 => Cisco ASAv 9.22.1.1-1
-        - L3/L2 Cisco 3650 switch => Cisco IOSv-L2
-        - L2 Cisco 2960 switch => Cisco IOSv-L2
-        - Servers and PC hosts => VPC
-    - Console application: Solar-PuTTY
+  - Device:
+    - Windows Server 2022 VM
+    - Windows 10 VM
+- topology layout and IP labeling: Cisco Packet Tracer 9.0.0
   
 ## PROTOCOLS IMPLEMENTED - What I Scripted
-- Subnet one /8 organization into 5 /16 city branches (LA, SD, SF, NY, MI) down to /30 subnets
-- VLANs
-  - VLAN 10 "Management" /25
-  - VLAN 20 "Server" /23 (LA only)
-  - VLAN 30 "IT" /23 (LA only)
-  - VLAN 40 "Users" /20
-  - VLAN 50 "Wireless" /19
-  - VLAN 250 /29 (LA only)
-- VTP (Server/Client, domain, password)
-- Trunking
-- Inter-VLAN routing
-- NAT (PAT), static to LA_3650_DMZ, static to LA_3650
-- ASA Hub-and-Spoke, ASA Failover
-- Site-to-Site IPsec VPN (LA and NY, LA and SD, SD and SF, NY and MI)
-- OSPF (single-area) (not for ISP_3650_R, FW_SF_R, FW_MI_R)
-- Basic Security and SSH (from the Internet to LA_3650_DMZ, LA_3650)
+- Subnet organization, CIS.com, into 3 sites (LA, SD, NY) down to /30 subnets using C class private networks
+  - include server network for 1000 host IP addresses
+  - include client network for 4000 host IP addresses
+- Active Directory
+  - Sites (LA, SD, NY)
+    - 15 min replication interval
+    - SD-LA site link, connecting SD and LA sites
+    - SD-NY site link
+    - SD-LA-NY site link bridge connecting SD-LA site link and SD-NY site link
+  - DNS
+  - Web Server
   
 ## CHALLENGES / LESSON(S) LEARNED
-- Challenge: Getting NAT and all the ACLs correct so they don't interfere with other protocols.
-- LL: It was fun and concise to create network objects.
-- LL: Configuring NAT exemption ACLs to ensure specific traffic would route through the IPsec tunnels.
-- LL: OSPF single-area only outputted for each private network to learn about its own subnets vs all private networks learning about all other private networks.
-- LL: Configuring ASA Failover was easier than I initially thought.
+- Challenge: It was a LOT of little configurations to execute, but this was a lot of fun to see it all come together.
+- LL: Based on past assignments, I documented my process which is as follows:
+  - Phase 1: Initially configure all devices
+  - Phase 2: Config static routes and LAN routing
+  - Phase 3: Add first set of domain controllers and create domains (CIS.com, Admin.CIS.com, IT.Admin.CIS.com)
+  - Phase 4: Add second set of DC's
+  - Phase 5: Spot check configs for consistency DNS (Name Servers, Forwarders, Net Adapter DNS IP addresses)
+  - Phase 6: Add end host PC's to domains
+  - Phase 7: Perform final connectivity tests, snapshots as necessary and screenshot proof of success
+- LL: Routers were designated as separate Ethernet ports, while switches became virtual using separate VMnet network adapters
   
 ## TOPOLOGY
 ```
- ISP_3650_R  ➔  LA_3650_WAN  ➔   LA_ASA1  ⤵  
-                                              LA_3650_DMZ   ➔  DMZ_SRV  
-                           (Failover) ↕     ╳  
-                                               LA_3650      ➔  LA_Server_20  
-                              ➔   LA_ASA2  ⤴               ➔  LA_IT_30  
-                                                            ➔  LA_2960      ➔  LA_Users_40  
-                                                                             ➔  LA_Wireless_50  
-  
-             ➔     SD_ASA    ➔   SD_3650   ➔   SD_2960    ➔  SD_User_40  
-                                                            ➔  SD_Wireless_50  
-  
-             ➔     FW_SF_R   ➔  SF_2960_1  ➔  SF_2960_2   ➔  SF_User_40  
-                                                            ➔  SF_Wireless_50  
-  
-             ➔     NY_ASA    ➔   NY_3650   ➔   NY_2960    ➔  NY_User_40  
-                                                            ➔  NY_Wireless_50  
- 
-             ➔     FW_MI_R   ➔  MI_2960_1  ➔  MI_2960_2   ➔  MI_User_40  
-                                                            ➔  MI_Wireless_50
-```
+ Internet   ➔   SD-FW   ➔   SW-SD-DMZ  ➔   SRV-SD-DMZ
+
+                         ➔     SD-R2    ➔    SW-SD-01   ➔   SRV-SD-01
+                                                          ➔   SRV-SD-02
+                                         ➔    SW-SD-02   ➔   CL-SD-01
+
+                                         ➔     SD-R1     ➔     LA-R1     ➔    SW-LA-01   ➔   SRV-LA-01
+                                                                                            ➔   SRV-LA-02
+                                                                           ➔    SW-LA-02   ➔   CL-LA-01
+
+                                                          ➔     NY-R1     ➔    SW-NY-01   ➔   SRV-NY-01
+                                                                                            ➔   SRV-NY-02
+                                                                           ➔    SW-NY-02   ➔   CL-NY-01
 
